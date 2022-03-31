@@ -4,7 +4,8 @@ import { FaSignInAlt } from 'react-icons/fa';
 import { useDispatch , useSelector } from 'react-redux';
 import { login , reset } from '../features/auth/auth-slice';
 import { toast } from 'react-toastify';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Spinner from '../components/Spinner';
 const Login = () => {
 const dispatch = useDispatch();
 const navigate = useNavigate();
@@ -47,6 +48,10 @@ useEffect(() => {
     }
     dispatch(login(userData));
     
+ }
+
+ if(isLoading) {
+     return <Spinner />
  }
   return (
       <>

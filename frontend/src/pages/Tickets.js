@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { getTickets, reset } from '../features/tickets/ticketSlice'
+// import { getTickets, reset } from '../features/tickets/ticketSlice';
+import { getTickets , reset } from '../features/tickets/ticket-slice';
 import Spinner from '../components/Spinner'
 import React from 'react'
 
@@ -29,7 +30,7 @@ const Tickets = () => {
     
 
   return (
-    <div>Tickets</div>
+    <div>Tickets {tickets}</div>
   )
 }
 
