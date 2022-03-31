@@ -1,2 +1,4 @@
+# node_modules
+# .envnpm i expres
 node_modules
-.envnpm i expres
+.env
