@@ -23,8 +23,8 @@ useEffect(() => {
     if(isError) {
         toast.error(message);
     }
-    if(isSuccess || user) {
-        navigate('/');
+    if(isSuccess || user) { // if success then navigate to home page and reset the page
+        navigate('/'); 
     }
     dispatch(reset());
 },[isError, isSuccess, user, message, navigate, dispatch])

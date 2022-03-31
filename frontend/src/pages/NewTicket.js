@@ -1,23 +1,93 @@
 import React from 'react'
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useState , useEffect } from 'react';
+import { useSelector , useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+
+import { useNavigate } from 'react-router-dom';
+import { createTicket , reset } from '../features/tickets/ticket-slice';
+import Spinner from '../components/Spinner';
+import BackButton from '../components/BackButton';
+
 const NewTicket = () => {
-    const user = useSelector(state => state.auth);
+    const {user} = useSelector(state => state.auth);
+const {isLoading , isSuccess , isError , message} = useSelector(state => state.ticket);
+const navigate = useNavigate();
+const dispatch = useDispatch();
+
     const [name] = useState(user.name);
+    console.log(name);
     const [email] = useState(user.email);
     const[product , setProduct] = useState('iPhone');
     const [description , setDescription] = useState('');
 
+    useEffect(() => {
+if(isError) {
+    toast.error(message);
+}
+if(isSuccess) {
+    dispatch(reset());
+    navigate('/tickets');
+}
+dispatch(reset());
+    } , [dispatch , isError , isSuccess,message,navigate]);
+
+
+    if(isLoading) {
+       return <Spinner />
+    }
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        dispatch(createTicket({product , description}));
+    }
+
   return (
    <>
+   <BackButton url = "/" />
 <section className='heading'>
     <h1>Create a new ticket</h1>
     <p>Please fill out the form below</p>
 </section>
 <section className='form'>
-    <label htmlFor='name'>Customer name</label>
-    <input type="text" className = "foem-control" value = {name} disabled />
-</section>
+        <div className='form-group'>
+          <label htmlFor='name'>Customer Name</label>
+          <input type='text' className='form-control' value={name} disabled/>
+        </div>
+        <div className='form-group'>
+          <label htmlFor='email'>Customer Email</label>
+          <input type='text' className='form-control' value={email} disabled />
+        </div>
+        <form onSubmit={onSubmit}>
+          <div className='form-group'>
+            <label htmlFor='product'>Product</label>
+            <select
+              name='product'
+              id='product'
+              value={product}
+              onChange={(e) => setProduct(e.target.value)}
+            >
+              <option value='iPhone'>iPhone</option>
+              <option value='Macbook Pro'>Macbook Pro</option>
+              <option value='iMac'>iMac</option>
+              <option value='iPad'>iPad</option>
+            </select>
+          </div>
+          <div className='form-group'>
+            <label htmlFor='description'>Description of the issue</label>
+            <textarea
+              name='description'
+              id='description'
+              className='form-control'
+              placeholder='Description'
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            ></textarea>
+          </div>
+          <div className='form-group'>
+            <button className='btn btn-block'>Submit</button>
+          </div>
+        </form>
+      </section>
    </>
   )
 
