@@ -15,7 +15,7 @@ try {
     //get the token from backend. SInce it a protected route.
     const token = thunkAPI.getState().auth.user.token;
     
-return await ticketService.createTicket(ticketData , token);
+return await ticketService.createTicket(ticketData , token);// ticketData contains the product and description
 }catch(error) {
     const message = 
     (error.response && error.response.data && error.response.data.message) ||
